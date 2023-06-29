@@ -29,20 +29,28 @@ const getCurrency = async () => {
 
 const categorize = arrayOfProducts => {
     let idArray = []
-    let newProductsArray = []
+    let newProductsMap = {}
+    let id = 1
     arrayOfProducts.forEach(item => {
+        let newObj = {}
         if (!idArray.includes(item.category.id)) {
-            let newObj = {}
             newObj = { category: { id: item.category.id, name: item.category.name }, product: [] }
             newObj.product.push(item)
-            newProductsArray.push(newObj)
+            newProductsMap[id] = newObj
             idArray.push(item.category.id)
+            id++;
+        } else {
+            idArray.forEach(id => {
+                if (id === item.category.id) {
+                    newProductsMap[idArray.indexOf(id) + 1].product.push(item)
+                }
+            })
         }
     })
-    return newProductsArray;
+    return Object.values(newProductsMap);
 }
 
-const transformPrices =  arrayOfProducts => {
+const transformPrices = arrayOfProducts => {
     return getCurrency().then(data => {
         arrayOfProducts.map(items => {
             return items.product[0].price = items.product[0].price * data.result
