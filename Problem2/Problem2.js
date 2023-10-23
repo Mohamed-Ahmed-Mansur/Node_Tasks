@@ -61,7 +61,7 @@ const transformPrices = arrayOfProducts => {
 
 getProduct()
 .then(data => {
-    transformPrices(categorize(data))
+    console.log(data)
 })
 .catch(err => { 
     console.log(err)
